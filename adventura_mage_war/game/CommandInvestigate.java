@@ -9,15 +9,19 @@ package game;
 public class CommandInvestigate implements ICommand
 {
     private Game game;
+    private GameWorld gameWorld;
+    private Inventory inventory;
 
     /**
      * Konstruktor třídy.
      *
      * @param game hra, ve které se bude příkaz používat
      */
-    public CommandInvestigate(Game game)
+    public CommandInvestigate(GameWorld gameWorld, Game game)
     {
         this.game = game;
+        this.gameWorld = gameWorld;
+        this.inventory = new GameWorld().getInventory();
     }
 
     /**
@@ -41,20 +45,23 @@ public class CommandInvestigate implements ICommand
     @Override
     public String execute(String[] parameters)
     {
-        //# TODO: Zde můžete naimplementovat logiku příkazu pro průzkum (tj. vypsání
-        //# podrobného popisu) předmětu. Jedná se o námět na možné rozšíření. Pokud
-        //# příkaz ve Vaší hře bude dávat smysl, dokončete jeho implementaci, jinak
-        //# tuto třídu z projektu odstraňte. V rámci logiky příkazu je nutné provést
-        //# následující kroky:
-        
-        //# Zkontrolovat, zda byl příkaz zavolán s jedním parametrem, jinak vrátit
-        //# chybovou zprávu
-        
-        //# Zkontrolovat, zda parametr odpovídá názvu nějakého předmětu v inventáři
-        //# nebo v aktuální lokaci, jinak vrátit chybovou zprávu
-        
-        //# Vrátit popis předmětu (hodnotu atributu description)
+        if (parameters.length == 0) {
+            return "musíš zadat predmět";
+        }
+        if (parameters.length > 1) {
+            return "můžeš si prohlídnout jen jeden předmět";
+        }
 
-        return "Tento příkaz aktuálně není naimplementovaný.";
+        String nameToInvestigate = parameters[0];
+        Inventory inventory = gameWorld.getInventory();
+
+        if (inventory.isInInventory(nameToInvestigate) ){
+            return inventory.getItem(nameToInvestigate).getDescription();
+        }
+        if (gameWorld.getCurrentLocation().containsItem(nameToInvestigate)){
+            return gameWorld.getCurrentLocation().getItem(nameToInvestigate).getDescription();
+        }
+
+        return "tento item neexistuje";
     }
 }

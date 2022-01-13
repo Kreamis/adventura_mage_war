@@ -37,21 +37,38 @@ public class CommandGive implements ICommand{
         if (parameters.length >= 3) {
             return "v jednu chvíli můžeš dát pouze jednu věc";
         }
-        if (gameWorld.getCurrentLocation().getName().equals("prvni_patro") && gameWorld.getInventory().isInInventory("vino") && parameters[0].equals("zabka") && parameters[1].equals("vino") && !gameWorld.getInventory().itemCapacity())
+        if (gameWorld.getCurrentLocation().getName().equals("prvni_patro") && parameters[0].equals("zabka") && !parameters[1].equals("hulka"))
         {
-            return "máš moc věcí něco vyhoď";
-        }
-        if (gameWorld.getCurrentLocation().getName().equals("prvni_patro") && gameWorld.getInventory().isInInventory("vino") && parameters[0].equals("zabka") && parameters[1].equals("vino") && gameWorld.getInventory().itemCapacity())
-        {
-            gameWorld.getInventory().choseItem("vino");
-            String exitName = "pokladnice";
 
-            Location exit = getTreasureName();
-            gameWorld.setCurrentLocation(exit);
-
-            return "dal jsi zlatou sošku obchodníkovy a dostal jsi zvláštní meč";
+            return "tuhle vec zabka nechce";
         }
 
-        return "Nic se nestalo, nikomu jsi nic nedal";
+        if (gameWorld.getCurrentLocation().getName().equals("prvni_patro") && parameters[0].equals("zabka") && !parameters[1].equals("mec"))
+        {
+
+            return "tuhle vec zabka nechce";
+        }
+
+        if (gameWorld.getCurrentLocation().getName().equals("prvni_patro") && gameWorld.getInventory().isInInventory("hulka") && parameters[0].equals("zabka") && parameters[1].equals("hulka") && gameWorld.getInventory().itemCapacity())
+        {
+            gameWorld.getInventory().choseItem("hulka");
+            Location pokladnice = gameWorld.getLocation("pokladnice");
+
+            gameWorld.setCurrentLocation(pokladnice);
+
+            return "jsi v pokladnici";
+        }
+
+        if (gameWorld.getCurrentLocation().getName().equals("prvni_patro") && gameWorld.getInventory().isInInventory("mec") && parameters[0].equals("zabka") && parameters[1].equals("mec") && gameWorld.getInventory().itemCapacity())
+        {
+            gameWorld.getInventory().choseItem("mec");
+            Location pokladnice = gameWorld.getLocation("pokladnice");
+
+            gameWorld.setCurrentLocation(pokladnice);
+
+            return "jsi v pokladnici";
+        }
+
+        return "Někde jsi udělal chybu nikomu jsi nic nedal";
     }
 }

@@ -29,7 +29,8 @@ public class CommandThrowOut implements ICommand{
         Inventory inventory = gameWorld.getInventory();
 
         if (inventory.isInInventory(nameWhatThrow) ){
-            inventory.choseItem(nameWhatThrow);
+            Item toThrow = inventory.choseItem(nameWhatThrow);
+            gameWorld.getCurrentLocation().addItem(toThrow);
 
             return "vyhodil jsi " + nameWhatThrow;
         }

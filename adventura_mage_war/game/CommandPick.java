@@ -11,6 +11,7 @@ public class CommandPick implements ICommand
 
     private GameWorld gameWorld;
     private Inventory inventory;
+    private Game game;
 
     /**
      * Konstruktor třídy.
@@ -18,11 +19,12 @@ public class CommandPick implements ICommand
      * @param gameWorld hra, ve které se bude příkaz používat
      */
 
-    public CommandPick(GameWorld gameWorld)
+    public CommandPick(GameWorld gameWorld, Game game)
     {
 
         this.gameWorld = gameWorld;
         this.inventory = gameWorld.getInventory();
+        this.game = game;
     }
     /**
      * Metoda vrací název příkazu tj.&nbsp; slovo <b>seber</b>.
@@ -52,6 +54,11 @@ public class CommandPick implements ICommand
     @Override
     public String execute(String[] parameters)
     {
+        if(gameWorld.getCurrentLocation().getName().equals("pokladnice")&&gameWorld.getCurrentLocation().getItem("poklad").equals("poklad"))
+       {
+           gameWorld.isVictorious();
+            game.setGameOver(true);
+        }
         if (parameters.length < 1) {
             return "Tomu nerozumím, musíš mi říct, co mám sebrat.";
         }

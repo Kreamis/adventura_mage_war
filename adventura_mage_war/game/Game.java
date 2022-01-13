@@ -16,7 +16,7 @@ public class Game
 {
     private final ListOfCommands validCommands;
     private boolean gameOver;
-    private boolean role;
+    private PlayerRole role;
     private GameWorld world;
     public Inventory inventory;
 
@@ -29,7 +29,6 @@ public class Game
     public Game()
     {
         gameOver = false;
-        role = true;
         world = new GameWorld();
         validCommands = new ListOfCommands();
         commands = new HashSet<>();
@@ -38,26 +37,28 @@ public class Game
         commands.add(new CommandHelp(this.validCommands, this.getGameWorld()));
         commands.add(new CommandTerminate(this));
         commands.add(new CommandLookAround(this));
-        commands.add(new CommandInvestigate(this));
+        commands.add(new CommandInvestigate(getGameWorld(), this));
         commands.add(new CommandMove(this));
-        commands.add(new CommandPick(getGameWorld()));
+        commands.add(new CommandPick(getGameWorld(),this));
         commands.add(new CommandInventory(getGameWorld()));
         commands.add(new CommandThrowOut(getGameWorld()));
         commands.add(new CommandTalkTo(getGameWorld()));
         commands.add(new CommandAttack(getGameWorld(), this));
         commands.add(new CommandGive(getGameWorld()));
+        commands.add(new CommandOpen(getGameWorld(), this));
 
         validCommands.enterCommand(new CommandHelp(this.validCommands, this.getGameWorld()));
         validCommands.enterCommand(new CommandTerminate(this));
         validCommands.enterCommand(new CommandLookAround(this));
-        validCommands.enterCommand(new CommandInvestigate(this));
+        validCommands.enterCommand(new CommandInvestigate(getGameWorld(), this));
         validCommands.enterCommand(new CommandMove(this));
-        validCommands.enterCommand(new CommandPick(getGameWorld()));
+        validCommands.enterCommand(new CommandPick(getGameWorld(),this));
         validCommands.enterCommand(new CommandInventory(getGameWorld()));
         validCommands.enterCommand(new CommandThrowOut(getGameWorld()));
         validCommands.enterCommand(new CommandTalkTo(getGameWorld()));
         validCommands.enterCommand(new CommandAttack(getGameWorld(), this));
         validCommands.enterCommand(new CommandGive(getGameWorld()));
+        validCommands.enterCommand(new CommandOpen(getGameWorld(), this));
     }
 
     /**
@@ -70,17 +71,12 @@ public class Game
     {
         return gameOver;
     }
-    public boolean whatRole()
-    {
+
+    public PlayerRole getRole() {
         return role;
     }
 
-    public boolean getRole() {
-        return role;
-    }
-
-    public void setRole(boolean role)
-    {
+    public void setRole(PlayerRole role) {
         this.role = role;
     }
 
@@ -147,40 +143,6 @@ public class Game
         return "Tomu nerozumím, příkaz '" + commandName + "' neznám.";
     }
 
-
-
-    public String processCommandRole(String line)
-    {
-        String[] parts = line.split("[ \t]+");
-
-        String commandName = parts[0];
-        String[] commandParameters = new String[parts.length - 1];
-
-        for (int i = 0; i < commandParameters.length; i++) {
-            commandParameters[i] = parts[i + 1];
-        }
-
-        for (ICommand cmd : commands) {
-            if (cmd.getName().equals("mage")) {
-                setRole(true);
-
-                return "a jsi mage";
-            }
-            if (cmd.getName().equals("warrior")) {
-                setRole(false);
-
-                return "a jsi mage";
-            }
-        }
-
-        return "Tomu nerozumím, příkaz '" + commandName + "' neznám.";
-    }
-
-
-
-
-
-
     /**
      * Metoda vrací úvodní text pro hráče, který se vypíše na konzoli ihned po
      * zahájení hry.
@@ -210,7 +172,7 @@ public class Game
         String epilogue = "Díky, že sis zahrál(a).";
 
         if (world.isVictorious()) {
-            epilogue = "Vyhrál(a) jsi, Karkulka dorazila k babičce.\n\n" + epilogue;
+            epilogue = "Vyhrál(a) jsi, dokázal jsi získat poklad a nyní můžeš splatit jeden z tvých dluhů, dobrá práce.\n\n" + epilogue;
         }
 
         return epilogue;

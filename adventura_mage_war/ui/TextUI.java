@@ -1,6 +1,7 @@
 package ui;
 
 import game.Game;
+import game.PlayerRole;
 
 import java.util.Scanner;
 
@@ -36,6 +37,21 @@ public class TextUI
     public void play()
     {
         System.out.println(game.getPrologue());
+
+        while (game.getRole() == null) {
+            System.out.println("Vyber si roli, je k dispozici 'mage' a 'war'");
+            String role = scanner.nextLine().trim();
+
+            switch (role) {
+                case "mage" -> game.setRole(PlayerRole.MAGE);
+                case "war" -> game.setRole(PlayerRole.WAR);
+                default -> System.out.println("Toto není validní role. Zkus to znovu a lépe.");
+            }
+
+            if (game.getRole() != null) {
+                System.out.println("Zvolil jsi si roli: " + game.getRole().getName());
+            }
+        }
 
         while (!game.isGameOver()) {
             System.out.print("\n> ");

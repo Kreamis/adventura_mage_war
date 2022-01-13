@@ -1,5 +1,8 @@
 package game;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Třída představující mapu lokací herního světa. V datovém atributu
  * {@link #currentLocation} uchovává odkaz na aktuální lokaci, ve které
@@ -16,6 +19,9 @@ package game;
 public class GameWorld
 {
     private Location currentLocation;
+
+    private Set<Location> locations;
+
     private Inventory inventory;
 
 
@@ -25,6 +31,7 @@ public class GameWorld
     public GameWorld()
     {
         inventory = new Inventory();
+        locations = new HashSet<>();
         Location enterence = new Location("vstup", "vstup do  dungeonu, za tebou jsou vrazy kteří hlídají, aby sis to náhodou nerozmyslel");
         Location firstFloor = new Location("prvni_patro", "Toto je les kolem tvého domu, rostou zde houby.");
         Location darkForest = new Location("temny_les", "Toto je temný les, říká se, že tady můžeš potkat vlka.");
@@ -44,11 +51,14 @@ public class GameWorld
         Item babovka = new Item("babovka", "mňam do píči");
         Item table = new Item("stul", "Těžký dubový stůl, vůbec nemá smysl snažit se s ním pohnout.", false);
         Item treasure = new Item("poklad", "jej");
-
+        Item bedna = new Item("bedna", "to bych zkusel otevřít třeba v tom něco je",false);
+        Item klic = new Item("klic", "prostě klíč asi od nějaké bedny" );
 
         enterence.addItem(wine);
         enterence.addItem(babovka);
         enterence.addItem(table);
+        enterence.addItem(bedna);
+        enterence.addItem(klic);
         treasureRoom.addItem(treasure);
 
         Character zabka = new Character("zabka", "když mi dáš prstýnek ukážu ti čáry", false,true);
@@ -58,6 +68,14 @@ public class GameWorld
         firstFloor.addChar(pobuda);
 
         currentLocation = enterence;
+        locations.addAll(
+                Set.of(
+                    enterence,
+                    firstFloor,
+                    darkForest,
+                    treasureRoom
+                )
+        );
     }
 
     /**
@@ -95,7 +113,19 @@ public class GameWorld
      */
     public boolean isVictorious()
     {
-        return inventory.isInInventory("treasure");
+        return inventory.isInInventory("poklad");
     }
 
+    public Location getLocation(String name) {
+        Location found = null;
+
+        for (Location location : locations) {
+            if (location.getName().equals(name)) {
+                found = location;
+                break;
+            }
+        }
+
+        return found;
+    }
 }
