@@ -11,16 +11,16 @@ pro autory - před předáním budoucím uživatelům ji odstraňte.
 --------------------------------------------------------------------
 
 ================================================
-NÁZEV PROJEKTU:
+NÁZEV PROJEKTU: Mage/War adventura
 ================================================
 
-AUTOŘI:
+AUTOŘI: Michal Ševčík
 VERZE A DATUM:
 ================================================
 
 
 
-ÚČEL PROJEKTU:
+ÚČEL PROJEKTU: semestrální projekt pro předmět 4IT101
 ==============
 
 
@@ -36,5 +36,5 @@ INSTRUKCE PRO UŽIVATELE:
 
 
 ================================================================================
-UŽITEČNÉ PŘÍKAZY PRO PRÁCI S PŘÍKAZOVÝM PANELEM:
+UŽITEČNÉ PŘÍKAZY PRO PRÁCI S PŘÍKAZOVÝM PANELEM: napoveda
 ================================================
